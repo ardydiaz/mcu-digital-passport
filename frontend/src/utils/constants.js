@@ -4,3 +4,9 @@ export const ROLES = {
   ORGANIZER: 'Organizer',
   STUDENT: 'Student',
 };
+
+// Branding shown in the app shell (sidebar, top bar)
+export const APP_BRAND = {
+  institution: 'MCU',
+  productName: 'Digital Passport',
+};

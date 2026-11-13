@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Digital Passport | Global Education Academy</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Montserrat & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        royal: {
+                            950: '#1A0533',
+                            900: '#2B0B4E',
+                            800: '#3B0F6B',
+                            700: '#5B21B6',
+                            600: '#6D28D9',
+                            100: '#F3E8FF',
+                            50: '#FAF8FF',
+                        },
+                        gold: {
+                            200: '#FDE68A',
+                            300: '#F5DF99',
+                            400: '#E5C158',
+                            500: '#D4AF37',
+                            600: '#B45309',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Soft Lavender-White Background with Subtle Royal Guilloche Pattern */
+        .passport-bg {
+            background-color: #FAF8FF;
+            background-image: 
+                radial-gradient(circle at 88% 10%, rgba(91, 33, 182, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 12% 85%, rgba(212, 175, 55, 0.12) 0%, transparent 42%),
+                repeating-radial-gradient(circle at 50% 50%, rgba(59, 15, 107, 0.035) 0, rgba(59, 15, 107, 0.035) 2px, transparent 2px, transparent 16px);
+        }
+
+        /* Subtle World Map SVG Watermark in Soft Violet */
+        .world-watermark {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 500' fill='none' stroke='%235B21B6' stroke-opacity='0.06' stroke-width='1.5'%3E%3Cpath d='M150,120 Q200,80 260,110 T350,140 Q320,210 270,250 T210,360 Q180,300 160,220 Z'/%3E%3Cpath d='M450,90 Q520,70 590,100 T680,150 Q650,240 580,290 T480,350 Q440,260 450,180 Z'/%3E%3Cpath d='M720,130 Q800,110 880,150 T920,250 Q850,310 780,290 T720,200 Z'/%3E%3Ccircle cx='500' cy='250' r='220' stroke-dasharray='6 6'/%3E%3Ccircle cx='500' cy='250' r='160' stroke-dasharray='3 9'/%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Royal Purple & Violet Hero Gradient */
+        .geo-banner {
+            background: linear-gradient(135deg, #2B0B4E 0%, #3B0F6B 55%, #5B21B6 100%);
+        }
+
+        /* Gold Corner Frame */
+        .gold-corners {
+            position: relative;
+        }
+        .gold-corners::before, .gold-corners::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-color: #D4AF37;
+            border-style: solid;
+            pointer-events: none;
+        }
+        .gold-corners::before {
+            top: -4px;
+            left: -4px;
+            border-width: 2.5px 0 0 2.5px;
+            border-top-left-radius: 6px;
+        }
+        .gold-corners::after {
+            bottom: -4px;
+            right: -4px;
+            border-width: 0 2.5px 2.5px 0;
+            border-bottom-right-radius: 6px;
+        }
+
+        /* Smooth Modal Transitions */
+        .modal-backdrop {
+            backdrop-filter: blur(8px);
+            transition: opacity 0.25s ease;
+        }
+
+        /* Holographic Gold Shimmer on Verification Card */
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(25deg); }
+            100% { transform: translateX(200%) rotate(25deg); }
+        }
+        .holo-sheen {
+            position: relative;
+            overflow: hidden;
+        }
+        .holo-sheen::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 50%;
+            height: 200%;
+            background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.14), transparent);
+            animation: shimmer 6s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FAF8FF;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C4B5FD;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5B21B6;
+        }
+    </style>
+</head>
+<body class="passport-bg world-watermark text-royal-950 min-h-screen flex flex-col md:flex-row selection:bg-gold-500 selection:text-royal-950 pb-20 md:pb-0">
+
+    <!-- DESKTOP SIDEBAR NAVIGATION (Deep Royal Purple & Gold) -->
+    <aside class="hidden md:flex md:w-72 md:flex-col md:fixed md:inset-y-0 bg-royal-900 border-r border-gold-500/30 shadow-xl z-30">
+        <!-- Brand Header -->
+        <div class="p-6 border-b border-white/10 flex items-center gap-3.5">
+            <!-- Custom Institution Crest SVG (Royal Purple Shield / White Book / Gold Torch) -->
+            <div class="w-12 h-12 rounded-xl bg-royal-950 border-2 border-gold-400 p-1.5 flex items-center justify-center shadow-lg shadow-gold-500/15 shrink-0">
+                <svg viewBox="0 0 64 64" class="w-full h-full">
+                    <path d="M32 4 L54 12 V30 C54 45 43 55 32 60 C21 55 10 45 10 30 V12 Z" fill="#3B0F6B" stroke="#E5C158" stroke-width="3"/>
+                    <path d="M32 10 C35 15 37 18 34 22 C33 23 31 23 30 22 C27 18 29 15 32 10 Z" fill="#FDE68A"/>
+                    <rect x="30.5" y="22" width="3" height="12" rx="1" fill="#D4AF37"/>
+                    <path d="M16 32 Q24 29 32 34 Q40 29 48 32 V45 Q40 42 32 47 Q24 42 16 45 Z" fill="#FFFFFF" stroke="#2B0B4E" stroke-width="1.5"/>
+                    <line x1="32" y1="34" x2="32" y2="47" stroke="#2B0B4E" stroke-width="1.5"/>
+                    <path d="M18 49 Q32 54 46 49" fill="none" stroke="#E5C158" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <div>
+                <span class="text-[10px] font-bold tracking-[0.2em] text-gold-300 uppercase block">Global Education</span>
+                <h1 class="font-display font-extrabold text-sm tracking-wide text-white leading-tight">DIGITAL PASSPORT</h1>
+            </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="flex-1 px-4 py-6 space-y-2" id="desktop-nav">
+            <button onclick="switchTab('home')" data-tab="home" class="nav-btn active w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all bg-white text-royal-900 border-l-4 border-gold-500 shadow-md">
+                <i data-lucide="home" class="w-5 h-5 text-royal-700"></i>
+                <span>Home Overview</span>
+            </button>
+            <button onclick="switchTab('passport')" data-tab="passport" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium text-purple-100 hover:bg-royal-800 hover:text-white transition-all border border-transparent">
+                <i data-lucide="book-open-check" class="w-5 h-5 text-gold-300"></i>
+                <span>My Passport & Records</span>
+            </button>
+            <button onclick="switchTab('services')" data-tab="services" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium text-purple-100 hover:bg-royal-800 hover:text-white transition-all border border-transparent">
+                <i data-lucide="graduation-cap" class="w-5 h-5 text-gold-300"></i>
+                <span>Campus Services</span>
+            </button>
+            <button onclick="switchTab('events')" data-tab="events" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium text-purple-100 hover:bg-royal-800 hover:text-white transition-all border border-transparent">
+                <i data-lucide="calendar-days" class="w-5 h-5 text-gold-300"></i>
+                <span>Events & Pathways</span>
+            </button>
+            <button onclick="switchTab('settings')" data-tab="settings" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium text-purple-100 hover:bg-royal-800 hover:text-white transition-all border border-transparent">
+                <i data-lucide="settings" class="w-5 h-5 text-gold-300"></i>
+                <span>Security & Settings</span>
+            </button>
+        </nav>
+
+        <!-- Sidebar Footer Status -->
+        <div class="p-4 m-4 rounded-2xl bg-royal-950/90 border border-gold-400/30">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs text-purple-200">Credential Status</span>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-gold-400/20 text-gold-300 border border-gold-400/40">
+                    <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse"></span> Verified
+                </span>
+            </div>
+            <p class="text-[11px] text-purple-200/80 leading-relaxed">
+                Cryptographically signed by Global Education Academy Registrar.
+            </p>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-1 md:pl-72 flex flex-col min-h-screen">
+        
+        <!-- TOP HEADER BAR (Crisp White with Gold Bottom Border) -->
+        <header class="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-gold-500/30 px-4 sm:px-8 py-3.5 shadow-sm">
+            <div class="max-w-6xl mx-auto flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <!-- Mobile Crest Logo -->
+                    <div class="md:hidden w-10 h-10 rounded-xl bg-royal-900 border-2 border-gold-500 p-1 flex items-center justify-center shadow-md">
+                        <svg viewBox="0 0 64 64" class="w-full h-full">
+                            <path d="M32 4 L54 12 V30 C54 45 43 55 32 60 C21 55 10 45 10 30 V12 Z" fill="#3B0F6B" stroke="#E5C158" stroke-width="3"/>
+                            <path d="M32 10 C35 15 37 18 34 22 C33 23 31 23 30 22 C27 18 29 15 32 10 Z" fill="#FDE68A"/>
+                            <rect x="30.5" y="22" width="3" height="12" rx="1" fill="#D4AF37"/>
+                            <path d="M16 32 Q24 29 32 34 Q40 29 48 32 V45 Q40 42 32 47 Q24 42 16 45 Z" fill="#FFFFFF"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="font-display font-extrabold text-base sm:text-xl tracking-wider text-royal-900 flex items-center gap-2">
+                            STUDENT DIGITAL PASSPORT
+                        </h1>
+                        <p class="text-xs text-royal-700 font-medium hidden sm:block">Official Academic & Campus Identity Credential</p>
+                    </div>
+                </div>
+
+                <!-- Header Actions -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <button onclick="openFullscreenQR()" class="flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-gold-500 to-gold-400 hover:from-gold-400 hover:to-gold-300 text-royal-950 font-display font-bold text-xs sm:text-sm shadow-md shadow-gold-500/20 transition-all active:scale-95">
+                        <i data-lucide="qr-code" class="w-4 h-4"></i>
+                        <span class="hidden sm:inline">Quick ID Pass</span>
+                        <span class="sm:hidden">ID Pass</span>
+                    </button>
+                    <button onclick="showToast('All academic credentials and campus passes are synced up-to-date.')" class="p-2.5 rounded-xl bg-royal-50 hover:bg-royal-100 border border-purple-200 text-royal-800 transition-colors relative" title="Notifications">
+                        <i data-lucide="bell" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                        <span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-gold-500"></span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- PAGE CONTENT WRAPPER -->
+        <div class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-8 py-6 space-y-6">
+
+            <!-- STUDENT PROFILE HERO CARD (Deep Royal Purple with Gold Trim) -->
+            <section class="geo-banner rounded-3xl p-5 sm:p-7 border-2 border-gold-400/50 shadow-xl shadow-royal-900/15 relative overflow-hidden text-white">
+                <!-- Decorative Geometric Gold & Violet Triangles -->
+                <div class="absolute right-0 top-0 bottom-0 w-48 pointer-events-none opacity-30">
+                    <svg viewBox="0 0 200 240" class="w-full h-full" preserveAspectRatio="none">
+                        <polygon points="200,0 80,120 200,240" fill="#7C3AED"/>
+                        <polygon points="200,110 120,190 200,240" fill="#D4AF37"/>
+                        <polygon points="140,0 200,0 200,80" fill="#1A0533"/>
+                    </svg>
+                </div>
+
+                <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                    <!-- Left: Student Photo & Primary Identity -->
+                    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left">
+                        <div class="flex flex-col items-center shrink-0">
+                            <div class="gold-corners p-1 bg-white rounded-2xl shadow-xl">
+                                <img 
+                                    src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80" 
+                                    onerror="this.src='https://placehold.co/240x280/2B0B4E/E5C158?text=AC'"
+                                    alt="Alexandra Chen Portrait" 
+                                    class="w-24 h-28 sm:w-28 sm:h-32 object-cover rounded-xl border border-gold-400/60"
+                                >
+                            </div>
+                            <span class="mt-2.5 px-3 py-0.5 rounded-md bg-white/15 backdrop-blur-sm border border-gold-300/50 font-mono text-[11px] font-bold text-gold-200 tracking-wider">
+                                ID: A2023-4387
+                            </span>
+                        </div>
+
+                        <div class="space-y-1.5 pt-1">
+                            <div class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-gold-400/20 border border-gold-300/50 text-gold-200 text-xs font-bold mb-1">
+                                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-gold-300"></i> Active Full-Time Student
+                            </div>
+                            <h2 class="font-display font-extrabold text-2xl sm:text-3xl tracking-tight text-white uppercase">
+                                ALEXANDRA CHEN
+                            </h2>
+                            <p class="text-sm sm:text-base font-medium text-purple-100">
+                                Global Education Academy
+                            </p>
+                            <p class="text-xs sm:text-sm text-gold-300 font-bold">
+                                PROGRAM: <span class="text-white font-normal">B.A. International Relations (Class of 2027)</span>
+                            </p>
+                            
+                            <!-- Quick Meta Badges -->
+                            <div class="pt-2 flex flex-wrap justify-center sm:justify-start gap-2">
+                                <span class="px-2.5 py-1 rounded-lg bg-royal-950/60 border border-white/15 text-xs text-purple-100 flex items-center gap-1.5">
+                                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-gold-300"></i> Main Campus • Honors College
+                                </span>
+                                <span class="px-2.5 py-1 rounded-lg bg-royal-950/60 border border-white/15 text-xs text-purple-100 flex items-center gap-1.5">
+                                    <i data-lucide="globe" class="w-3.5 h-3.5 text-gold-300"></i> Exchange Eligible
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Desktop Quick Verification Preview (Crisp White Card) -->
+                    <div class="hidden lg:flex items-center gap-4 bg-white text-royal-950 p-4 rounded-2xl border-2 border-gold-400 shadow-lg">
+                        <div class="bg-royal-50 p-2 rounded-xl border border-purple-200 cursor-pointer hover:scale-105 transition-transform" onclick="openFullscreenQR()" title="Click to enlarge QR">
+                            <div id="mini-qr-container" class="w-20 h-20"></div>
+                        </div>
+                        <div class="space-y-1">
+                            <span class="text-[10px] font-extrabold uppercase tracking-widest text-gold-600 block">Digital Seal</span>
+                            <p class="font-display font-extrabold text-sm text-royal-900">VALID UNTIL: AUG 2027</p>
+                            <p class="text-xs text-slate-600">Tap QR to expand or refresh</p>
+                            <button onclick="openFullscreenQR()" class="mt-1 text-xs font-bold text-royal-700 hover:text-gold-600 flex items-center gap-1 transition-colors">
+                                <span>Fullscreen Pass</span>
+                                <i data-lucide="maximize-2" class="w-3 h-3"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION DIVIDER BANNER: << MY DIGITAL PASSPORT >> (Crisp White & Gold Bar) -->
+            <div class="bg-white border-y-2 border-gold-400/60 py-2.5 px-4 rounded-2xl flex items-center justify-center gap-4 shadow-sm">
+                <div class="flex items-center text-gold-500 font-extrabold tracking-tighter text-lg select-none">
+                    <span>&laquo;</span>
+                </div>
+                <h3 class="font-display font-extrabold text-sm sm:text-base tracking-[0.18em] text-royal-900 uppercase text-center">
+                    MY DIGITAL PASSPORT
+                </h3>
+                <div class="flex items-center text-gold-500 font-extrabold tracking-tighter text-lg select-none">
+                    <span>&raquo;</span>
+                </div>
+            </div>
+
+            <!-- INTERACTIVE PASSPORT DASHBOARD GRID (Crisp White Cards with Royal Purple & Gold Accents) -->
+            <section id="dashboard-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                
+                <!-- 1. ACADEMIC RECORDS CARD -->
+                <div onclick="openModal('academic')" class="group cursor-pointer rounded-2xl bg-white hover:bg-royal-50/70 border border-purple-200/80 hover:border-gold-500 p-5 transition-all duration-300 shadow-md hover:shadow-xl hover:shadow-royal-900/10 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-royal-900 text-gold-300 border border-gold-400/50 flex items-center justify-center group-hover:scale-110 transition-all shadow-sm">
+                                <i data-lucide="book-open" class="w-6 h-6"></i>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                Up-to-Date
+                            </span>
+                        </div>
+                        <h4 class="font-display font-extrabold text-base sm:text-lg text-royal-900 tracking-wide uppercase mb-1 group-hover:text-royal-700 transition-colors">
+                            1. ACADEMIC RECORDS
+                        </h4>
+                        <p class="text-sm text-royal-800 font-semibold">3.8 GPA • Dean's List</p>
+                        <p class="text-xs text-slate-600 mt-1">Official Transcript View & Semester Grades</p>
+                    </div>
+                    <div class="mt-5 pt-3 border-t border-purple-100 flex items-center justify-between text-xs font-bold text-gold-600 group-hover:text-royal-800">
+                        <span>View Transcript</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- 2. EXTRACURRICULARS CARD -->
+                <div onclick="openModal('extracurricular')" class="group cursor-pointer rounded-2xl bg-white hover:bg-royal-50/70 border border-purple-200/80 hover:border-gold-500 p-5 transition-all duration-300 shadow-md hover:shadow-xl hover:shadow-royal-900/10 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-royal-900 text-gold-300 border border-gold-400/50 flex items-center justify-center group-hover:scale-110 transition-all shadow-sm">
+                                <i data-lucide="trophy" class="w-6 h-6"></i>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-gold-600 border border-gold-400/50">
+                                12 Events
+                            </span>
+                        </div>
+                        <h4 class="font-display font-extrabold text-base sm:text-lg text-royal-900 tracking-wide uppercase mb-1 group-hover:text-royal-700 transition-colors">
+                            2. EXTRACURRICULARS
+                        </h4>
+                        <p class="text-sm text-royal-800 font-semibold">Clubs & Varsity Sports</p>
+                        <p class="text-xs text-slate-600 mt-1">Model UN Chair • Debate Society • Tennis</p>
+                    </div>
+                    <div class="mt-5 pt-3 border-t border-purple-100 flex items-center justify-between text-xs font-bold text-gold-600 group-hover:text-royal-800">
+                        <span>Explore Activities</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- 3. CAMPUS SERVICES CARD -->
+                <div onclick="openModal('services')" class="group cursor-pointer rounded-2xl bg-white hover:bg-royal-50/70 border border-purple-200/80 hover:border-gold-500 p-5 transition-all duration-300 shadow-md hover:shadow-xl hover:shadow-royal-900/10 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-royal-900 text-gold-300 border border-gold-400/50 flex items-center justify-center group-hover:scale-110 transition-all shadow-sm">
+                                <i data-lucide="id-card" class="w-6 h-6"></i>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-royal-100 text-royal-800 border border-purple-300">
+                                Active Pass
+                            </span>
+                        </div>
+                        <h4 class="font-display font-extrabold text-base sm:text-lg text-royal-900 tracking-wide uppercase mb-1 group-hover:text-royal-700 transition-colors">
+                            3. CAMPUS SERVICES
+                        </h4>
+                        <p class="text-sm text-royal-800 font-semibold">Library Access • Dining Plan</p>
+                        <p class="text-xs text-slate-600 mt-1">Meals Remaining: <span class="text-royal-800 font-extrabold">85</span> • Barcode Ready</p>
+                    </div>
+                    <div class="mt-5 pt-3 border-t border-purple-100 flex items-center justify-between text-xs font-bold text-gold-600 group-hover:text-royal-800">
+                        <span>Open Access Barcode</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- 4. LEARNING PATHWAY CARD -->
+                <div onclick="openModal('pathway')" class="group cursor-pointer rounded-2xl bg-white hover:bg-royal-50/70 border border-purple-200/80 hover:border-gold-500 p-5 transition-all duration-300 shadow-md hover:shadow-xl hover:shadow-royal-900/10 flex flex-col justify-between sm:col-span-1 lg:col-span-1">
+                    <div>
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-royal-900 text-gold-300 border border-gold-400/50 flex items-center justify-center group-hover:scale-110 transition-all shadow-sm">
+                                <i data-lucide="milestone" class="w-6 h-6"></i>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-gold-600 border border-gold-400/50">
+                                75% Complete
+                            </span>
+                        </div>
+                        <h4 class="font-display font-extrabold text-base sm:text-lg text-royal-900 tracking-wide uppercase mb-1 group-hover:text-royal-700 transition-colors">
+                            4. LEARNING PATHWAY
+                        </h4>
+                        <p class="text-sm text-royal-800 font-semibold">Skills Badges: 5 Earned</p>
+                        <div class="mt-2.5">
+                            <div class="flex justify-between text-xs text-slate-600 mb-1">
+                                <span>Degree Credits</span>
+                                <span class="font-extrabold text-royal-900">90 / 120</span>
+                            </div>
+                            <div class="w-full h-2 bg-royal-100 rounded-full overflow-hidden border border-purple-200">
+                                <div class="h-full bg-gradient-to-r from-royal-700 to-gold-500 rounded-full" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5 pt-3 border-t border-purple-100 flex items-center justify-between text-xs font-bold text-gold-600 group-hover:text-royal-800">
+                        <span>View Badges & Roadmap</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- 5. UPCOMING EVENTS CARD -->
+                <div onclick="openModal('events')" class="group cursor-pointer rounded-2xl bg-white hover:bg-royal-50/70 border border-purple-200/80 hover:border-gold-500 p-5 transition-all duration-300 shadow-md hover:shadow-xl hover:shadow-royal-900/10 flex flex-col justify-between sm:col-span-1 lg:col-span-2">
+                    <div>
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-xl bg-royal-900 text-gold-300 border border-gold-400/50 flex items-center justify-center group-hover:scale-110 transition-all shadow-sm">
+                                    <i data-lucide="calendar-check" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-display font-extrabold text-base sm:text-lg text-royal-900 tracking-wide uppercase group-hover:text-royal-700 transition-colors">
+                                        5. UPCOMING EVENTS
+                                    </h4>
+                                    <p class="text-xs text-slate-600">Campus Schedule & RSVP Management</p>
+                                </div>
+                            </div>
+                            <span id="rsvp-badge-count" class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-royal-100 text-royal-800 border border-purple-300">
+                                2 Upcoming
+                            </span>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+                            <div class="p-3 rounded-xl bg-royal-50 border border-purple-200/80 flex items-center justify-between">
+                                <div>
+                                    <span class="text-[11px] font-extrabold text-gold-600 uppercase">Nov 15th • 2:00 PM</span>
+                                    <p class="text-sm font-bold text-royal-950">Diplomacy & Policy Workshop</p>
+                                </div>
+                                <span id="card-rsvp-1" class="px-2.5 py-1 rounded-md text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                    Going
+                                </span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-royal-50 border border-purple-200/80 flex items-center justify-between">
+                                <div>
+                                    <span class="text-[11px] font-extrabold text-gold-600 uppercase">Nov 18th • 5:30 PM</span>
+                                    <p class="text-sm font-bold text-royal-950">Model UN General Club Meet</p>
+                                </div>
+                                <span id="card-rsvp-2" class="px-2.5 py-1 rounded-md text-[11px] font-bold bg-white text-royal-800 border border-purple-300">
+                                    RSVP
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5 pt-3 border-t border-purple-100 flex items-center justify-between text-xs font-bold text-gold-600 group-hover:text-royal-800">
+                        <span>Manage Event RSVPs</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- VERIFICATION QR CODE FOOTER CARD (Deep Royal Purple & Gold Seal) -->
+            <section class="holo-sheen rounded-3xl bg-gradient-to-r from-royal-950 via-royal-900 to-royal-800 border-2 border-gold-400/70 p-5 sm:p-6 shadow-xl text-white">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+                    <div class="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
+                        <!-- QR Code with Gold Corner Brackets -->
+                        <div class="gold-corners p-2.5 bg-white rounded-2xl shadow-xl shrink-0 cursor-pointer" onclick="openFullscreenQR()">
+                            <div id="main-qr-container" class="w-24 h-24 sm:w-28 sm:h-28"></div>
+                        </div>
+                        
+                        <div class="space-y-1.5">
+                            <div class="inline-flex items-center gap-1.5 text-xs font-bold tracking-widest text-gold-300 uppercase">
+                                <i data-lucide="scan-line" class="w-4 h-4"></i> Official Cryptographic Verification
+                            </div>
+                            <h3 class="font-display font-extrabold text-xl sm:text-2xl text-white tracking-wide">
+                                SCAN FOR VERIFICATION
+                            </h3>
+                            <p class="font-display font-bold text-sm text-gold-300 tracking-wider">
+                                VALID UNTIL: AUG 2027
+                            </p>
+                            <p class="text-xs text-purple-200 max-w-md">
+                                Token ID: <span id="qr-token-display" class="font-mono font-bold text-gold-200">GEA-9842-AX7</span> • Auto-rotates for anti-spoofing security.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Security Controls -->
+                    <div class="flex flex-wrap sm:flex-col gap-2.5 w-full sm:w-auto justify-center">
+                        <button onclick="openFullscreenQR()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-gold-500 to-gold-400 hover:from-gold-400 hover:to-gold-300 text-royal-950 font-display font-bold text-xs sm:text-sm shadow-lg transition-all active:scale-95">
+                            <i data-lucide="maximize-2" class="w-4 h-4"></i>
+                            <span>Show Fullscreen Pass</span>
+                        </button>
+                        <button onclick="refreshDynamicQR()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-gold-300/40 font-semibold text-xs sm:text-sm transition-all active:scale-95">
+                            <i data-lucide="refresh-cw" id="refresh-icon" class="w-4 h-4 text-gold-300"></i>
+                            <span>Refresh Dynamic QR</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- MOBILE FIXED BOTTOM NAVIGATION BAR (Deep Royal Purple & Gold) -->
+    <nav class="md:hidden fixed bottom-0 inset-x-0 bg-royal-950/95 backdrop-blur-xl border-t-2 border-gold-500/40 z-30 px-2 py-1.5">
+        <div class="grid grid-cols-5 gap-1">
+            <button onclick="switchTab('home')" data-tab="home" class="mobile-nav-btn active flex flex-col items-center justify-center py-1.5 rounded-xl text-gold-300 transition-colors">
+                <i data-lucide="home" class="w-5 h-5 mb-0.5"></i>
+                <span class="text-[10px] font-bold">Home</span>
+            </button>
+            <button onclick="switchTab('passport')" data-tab="passport" class="mobile-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-purple-200/75 hover:text-white transition-colors">
+                <i data-lucide="book-open-check" class="w-5 h-5 mb-0.5"></i>
+                <span class="text-[10px] font-medium">My Passport</span>
+            </button>
+            <button onclick="switchTab('services')" data-tab="services" class="mobile-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-purple-200/75 hover:text-white transition-colors">
+                <i data-lucide="graduation-cap" class="w-5 h-5 mb-0.5"></i>
+                <span class="text-[10px] font-medium">Services</span>
+            </button>
+            <button onclick="switchTab('events')" data-tab="events" class="mobile-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-purple-200/75 hover:text-white transition-colors">
+                <i data-lucide="calendar-days" class="w-5 h-5 mb-0.5"></i>
+                <span class="text-[10px] font-medium">Events</span>
+            </button>
+            <button onclick="switchTab('settings')" data-tab="settings" class="mobile-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-purple-200/75 hover:text-white transition-colors">
+                <i data-lucide="settings" class="w-5 h-5 mb-0.5"></i>
+                <span class="text-[10px] font-medium">Settings</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- INTERACTIVE DETAIL MODAL (Crisp White Body + Royal Purple Header) -->
+    <div id="detail-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-royal-950/75 modal-backdrop">
+        <div class="bg-white text-royal-950 border-2 border-gold-400 rounded-3xl max-w-xl w-full max-h-[88vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            <!-- Modal Header -->
+            <div class="geo-banner px-6 py-4 border-b border-gold-400/40 flex items-center justify-between text-white">
+                <div class="flex items-center gap-3">
+                    <div id="modal-icon-box" class="w-10 h-10 rounded-xl bg-royal-950/60 border border-gold-400/50 flex items-center justify-center text-gold-300">
+                        <i data-lucide="book-open" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 id="modal-title" class="font-display font-extrabold text-base sm:text-lg text-white uppercase tracking-wide">
+                            Modal Title
+                        </h3>
+                        <p id="modal-subtitle" class="text-xs text-gold-300 font-medium">Subtitle details</p>
+                    </div>
+                </div>
+                <button onclick="closeModal()" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div id="modal-body" class="p-6 overflow-y-auto space-y-4 text-sm bg-royal-50/40">
+                <!-- Dynamic Content Injected Here -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-3.5 bg-white border-t border-purple-100 flex justify-end gap-3">
+                <button onclick="closeModal()" class="px-5 py-2 rounded-xl bg-royal-800 hover:bg-royal-700 text-white font-semibold text-xs sm:text-sm transition-colors">
+                    Done
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FULLSCREEN VERIFICATION PASS MODAL -->
+    <div id="fullscreen-qr-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-royal-950/85 modal-backdrop">
+        <div class="bg-gradient-to-b from-royal-800 to-royal-950 border-2 border-gold-400 rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl relative text-white">
+            <button onclick="closeFullscreenQR()" class="absolute top-4 right-4 p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold-400/20 border border-gold-300/50 text-gold-200 text-xs font-bold mb-3">
+                <span class="w-2 h-2 rounded-full bg-gold-400 animate-ping"></span> LIVE VERIFICATION PASS
+            </div>
+
+            <h3 class="font-display font-extrabold text-xl text-white tracking-wide">ALEXANDRA CHEN</h3>
+            <p class="text-xs text-gold-300 font-mono mt-0.5 mb-5">ID: A2023-4387 • CLASS OF 2027</p>
+
+            <!-- High-Contrast QR Box -->
+            <div class="gold-corners inline-block p-3.5 bg-white rounded-2xl shadow-2xl mx-auto">
+                <div id="fullscreen-qr-container" class="w-52 h-52"></div>
+            </div>
+
+            <div class="mt-5 space-y-2">
+                <div class="flex items-center justify-center gap-2 text-xs font-mono text-purple-200">
+                    <span>TOKEN:</span>
+                    <span id="modal-qr-token" class="font-bold text-gold-300">GEA-9842-AX7</span>
+                </div>
+                <p class="text-[11px] text-purple-200/80">
+                    Present this code at campus gates, library desks, or exam halls. Valid until <strong class="text-white">AUG 2027</strong>.
+                </p>
+            </div>
+
+            <button onclick="refreshDynamicQR()" class="mt-5 w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-gold-500 to-gold-400 hover:from-gold-400 hover:to-gold-300 text-royal-950 font-display font-bold text-sm shadow-lg transition-all active:scale-95">
+                <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                <span>Generate New Security Token</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION BANNER -->
+    <div id="toast-banner" class="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-royal-900 border-2 border-gold-400 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 max-w-sm">
+            <div class="w-8 h-8 rounded-lg bg-gold-400/20 flex items-center justify-center text-gold-300 shrink-0">
+                <i data-lucide="shield-check" class="w-4 h-4"></i>
+            </div>
+            <p id="toast-message" class="text-xs sm:text-sm font-medium text-purple-50">Notification text</p>
+        </div>
+    </div>
+
+    <script>
+        // Application State
+        const state = {
+            qrSeed: 9842,
+            tokenSuffix: 'AX7',
+            passMode: 'qr',
+            rsvps: {
+                event1: true,
+                event2: false
+            }
+        };
+
+        // Generate Crisp Deterministic SVG QR Code in Deep Royal Purple & Gold Center Seal
+        function generateQRSVG(seed) {
+            const size = 21;
+            let cells = '';
+            
+            const drawFinder = (ox, oy) => {
+                cells += `<rect x="${ox}" y="${oy}" width="7" height="7" fill="#2B0B4E"/>`;
+                cells += `<rect x="${ox+1}" y="${oy+1}" width="5" height="5" fill="#FFFFFF"/>`;
+                cells += `<rect x="${ox+2}" y="${oy+2}" width="3" height="3" fill="#2B0B4E"/>`;
+            };
+
+            drawFinder(0, 0);
+            drawFinder(size - 7, 0);
+            drawFinder(0, size - 7);
+
+            let hash = seed;
+            for (let y = 0; y < size; y++) {
+                for (let x = 0; x < size; x++) {
+                    if ((x < 8 && y < 8) || (x >= size - 8 && y < 8) || (x < 8 && y >= size - 8)) continue;
+                    hash = (hash * 16807) % 2147483647;
+                    if (hash % 2 === 0) {
+                        const fill = (x === 10 && y === 10) ? '#D4AF37' : '#2B0B4E';
+                        cells += `<rect x="${x}" y="${y}" width="1" height="1" fill="${fill}"/>`;
+                    }
+                }
+            }
+
+            return `<svg viewBox="0 0 ${size} ${size}" class="w-full h-full shape-rendering-crispEdges" xmlns="http://www.w3.org/2000/svg">${cells}</svg>`;
+        }
+
+        // Render all QR instances on the page
+        function renderAllQRs() {
+            const svg = generateQRSVG(state.qrSeed);
+            const mainEl = document.getElementById('main-qr-container');
+            const miniEl = document.getElementById('mini-qr-container');
+            const fullEl = document.getElementById('fullscreen-qr-container');
+            
+            if (mainEl) mainEl.innerHTML = svg;
+            if (miniEl) miniEl.innerHTML = svg;
+            if (fullEl) fullEl.innerHTML = svg;
+
+            const tokenStr = `GEA-${state.qrSeed}-${state.tokenSuffix}`;
+            document.getElementById('qr-token-display').textContent = tokenStr;
+            document.getElementById('modal-qr-token').textContent = tokenStr;
+        }
+
+        // Refresh Dynamic QR Token
+        function refreshDynamicQR() {
+            state.qrSeed = Math.floor(1000 + Math.random() * 9000);
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            state.tokenSuffix = Array.from({length: 3}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+            
+            renderAllQRs();
+            
+            const icon = document.getElementById('refresh-icon');
+            if (icon) {
+                icon.classList.add('animate-spin');
+                setTimeout(() => icon.classList.remove('animate-spin'), 500);
+            }
+            showToast(`Security token refreshed: GEA-${state.qrSeed}-${state.tokenSuffix}`);
+        }
+
+        // Fullscreen QR Modal Controls
+        function openFullscreenQR() {
+            const modal = document.getElementById('fullscreen-qr-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeFullscreenQR() {
+            const modal = document.getElementById('fullscreen-qr-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Navigation Tab Switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                const isTarget = btn.dataset.tab === tabName;
+                btn.className = isTarget 
+                    ? 'nav-btn active w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all bg-white text-royal-900 border-l-4 border-gold-500 shadow-md'
+                    : 'nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium text-purple-100 hover:bg-royal-800 hover:text-white transition-all border border-transparent';
+            });
+
+            document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+                const isTarget = btn.dataset.tab === tabName;
+                btn.className = isTarget
+                    ? 'mobile-nav-btn active flex flex-col items-center justify-center py-1.5 rounded-xl text-gold-300 transition-colors'
+                    : 'mobile-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-purple-200/75 hover:text-white transition-colors';
+            });
+
+            if (tabName === 'passport') openModal('academic');
+            else if (tabName === 'services') openModal('services');
+            else if (tabName === 'events') openModal('events');
+            else if (tabName === 'settings') openModal('settings');
+            else window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Detailed Module Modals (Crisp White & Royal Purple Cards)
+        function openModal(type) {
+            const modal = document.getElementById('detail-modal');
+            const title = document.getElementById('modal-title');
+            const subtitle = document.getElementById('modal-subtitle');
+            const body = document.getElementById('modal-body');
+            const iconBox = document.getElementById('modal-icon-box');
+
+            if (type === 'academic') {
+                title.textContent = '1. Academic Records';
+                subtitle.textContent = 'Cumulative GPA: 3.80 / 4.00 • Status: Up-to-Date';
+                iconBox.innerHTML = `<i data-lucide="book-open" class="w-5 h-5"></i>`;
+                body.innerHTML = `
+                    <div class="grid grid-cols-3 gap-3 text-center">
+                        <div class="p-3 rounded-2xl bg-white border border-purple-200 shadow-sm">
+                            <span class="text-xs text-slate-500 block">Cumulative GPA</span>
+                            <span class="font-display font-extrabold text-xl text-royal-900">3.80</span>
+                        </div>
+                        <div class="p-3 rounded-2xl bg-white border border-purple-200 shadow-sm">
+                            <span class="text-xs text-slate-500 block">Credits Earned</span>
+                            <span class="font-display font-extrabold text-xl text-royal-900">90</span>
+                        </div>
+                        <div class="p-3 rounded-2xl bg-white border border-gold-400/60 shadow-sm">
+                            <span class="text-xs text-slate-500 block">Standing</span>
+                            <span class="font-display font-bold text-sm text-gold-600 pt-1 block">Dean's List</span>
+                        </div>
+                    </div>
+                    <div class="space-y-2.5">
+                        <h4 class="font-display font-bold text-xs uppercase tracking-wider text-royal-800">Fall 2026 Current Courses</h4>
+                        <div class="p-3.5 rounded-xl bg-white border border-purple-200/80 flex items-center justify-between shadow-sm">
+                            <div>
+                                <p class="font-bold text-royal-950">IR-304: Global Security & Diplomacy</p>
+                                <p class="text-xs text-slate-500">Prof. H. Vance • 4.0 Credits</p>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-lg bg-royal-100 text-royal-900 font-display font-bold text-xs">A (4.0)</span>
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-white border border-purple-200/80 flex items-center justify-between shadow-sm">
+                            <div>
+                                <p class="font-bold text-royal-950">ECON-215: International Trade Policy</p>
+                                <p class="text-xs text-slate-500">Dr. M. Alverez • 4.0 Credits</p>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-lg bg-royal-100 text-royal-900 font-display font-bold text-xs">A- (3.7)</span>
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-white border border-purple-200/80 flex items-center justify-between shadow-sm">
+                            <div>
+                                <p class="font-bold text-royal-950">POL-310: Comparative Constitutional Law</p>
+                                <p class="text-xs text-slate-500">Prof. S. Lindqvist • 4.0 Credits</p>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-lg bg-royal-100 text-royal-900 font-display font-bold text-xs">A (4.0)</span>
+                        </div>
+                    </div>
+                `;
+            } else if (type === 'extracurricular') {
+                title.textContent = '2. Extracurriculars';
+                subtitle.textContent = '12 Verified Campus Events Attended';
+                iconBox.innerHTML = `<i data-lucide="trophy" class="w-5 h-5"></i>`;
+                body.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="p-4 rounded-2xl bg-white border border-gold-400/70 flex items-start gap-3.5 shadow-sm">
+                            <div class="w-10 h-10 rounded-xl bg-royal-900 text-gold-300 flex items-center justify-center shrink-0">
+                                <i data-lucide="award" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <h5 class="font-bold text-royal-950">Model United Nations Society</h5>
+                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-gold-600 border border-gold-400/50">Secretary-General</span>
+                                </div>
+                                <p class="text-xs text-slate-600 mt-1">Led 45 student delegates at the Regional Diplomacy Summit; awarded Best Delegation 2026.</p>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-white border border-purple-200 flex items-start gap-3.5 shadow-sm">
+                            <div class="w-10 h-10 rounded-xl bg-royal-100 text-royal-800 flex items-center justify-center shrink-0">
+                                <i data-lucide="users" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-royal-950">International Student Ambassadors</h5>
+                                <p class="text-xs text-slate-600 mt-1">Peer mentor for incoming exchange scholars • 32 volunteer hours logged.</p>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-white border border-purple-200 flex items-start gap-3.5 shadow-sm">
+                            <div class="w-10 h-10 rounded-xl bg-royal-100 text-royal-800 flex items-center justify-center shrink-0">
+                                <i data-lucide="medal" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-royal-950">Varsity Intramural Tennis Club</h5>
+                                <p class="text-xs text-slate-600 mt-1">Active roster member • 8 matches played this semester.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (type === 'services') {
+                title.textContent = '3. Campus Services';
+                subtitle.textContent = 'Library Access & Dining Meal Plan Pass';
+                iconBox.innerHTML = `<i data-lucide="id-card" class="w-5 h-5"></i>`;
+                renderServicesModalBody(body);
+            } else if (type === 'pathway') {
+                title.textContent = '4. Learning Pathway';
+                subtitle.textContent = '90 / 120 Credits • 5 Micro-Credential Badges';
+                iconBox.innerHTML = `<i data-lucide="milestone" class="w-5 h-5"></i>`;
+                body.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-white border border-purple-200 shadow-sm">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-royal-800">B.A. Graduation Progress</span>
+                            <span class="font-display font-extrabold text-gold-600">90 / 120 Credits (75%)</span>
+                        </div>
+                        <div class="w-full h-3 bg-royal-100 rounded-full overflow-hidden border border-purple-200">
+                            <div class="h-full bg-gradient-to-r from-royal-700 via-royal-600 to-gold-500 rounded-full" style="width: 75%"></div>
+                        </div>
+                        <p class="text-xs text-slate-600 mt-2">Expected Graduation: <strong class="text-royal-950">May 2027</strong> (On Track)</p>
+                    </div>
+                    <div>
+                        <h4 class="font-display font-bold text-xs uppercase tracking-wider text-royal-800 mb-2.5">Verified Skills Badges (5 Earned)</h4>
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <div class="p-3 rounded-xl bg-white border border-gold-400/60 flex items-center gap-2.5 shadow-sm">
+                                <i data-lucide="globe-2" class="w-5 h-5 text-gold-600 shrink-0"></i>
+                                <span class="text-xs font-bold text-royal-950">Cross-Cultural Negotiation</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-white border border-purple-200 flex items-center gap-2.5 shadow-sm">
+                                <i data-lucide="file-text" class="w-5 h-5 text-royal-700 shrink-0"></i>
+                                <span class="text-xs font-bold text-royal-950">Policy Brief Analysis</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-white border border-gold-400/60 flex items-center gap-2.5 shadow-sm">
+                                <i data-lucide="mic" class="w-5 h-5 text-gold-600 shrink-0"></i>
+                                <span class="text-xs font-bold text-royal-950">Public Diplomacy</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-white border border-purple-200 flex items-center gap-2.5 shadow-sm">
+                                <i data-lucide="bar-chart-3" class="w-5 h-5 text-royal-700 shrink-0"></i>
+                                <span class="text-xs font-bold text-royal-950">Geopolitical Data Lab</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-white border border-gold-400/60 flex items-center gap-2.5 col-span-2 shadow-sm">
+                                <i data-lucide="languages" class="w-5 h-5 text-gold-600 shrink-0"></i>
+                                <span class="text-xs font-bold text-royal-950">Bilingual Proficiency (English & Mandarin)</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (type === 'events') {
+                title.textContent = '5. Upcoming Events';
+                subtitle.textContent = 'Manage Campus Workshops & Club RSVPs';
+                iconBox.innerHTML = `<i data-lucide="calendar-check" class="w-5 h-5"></i>`;
+                renderEventsModalBody(body);
+            } else if (type === 'settings') {
+                title.textContent = 'Security & Passport Settings';
+                subtitle.textContent = 'Credential Privacy & Biometric Controls';
+                iconBox.innerHTML = `<i data-lucide="settings" class="w-5 h-5"></i>`;
+                body.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="p-3.5 rounded-xl bg-white border border-purple-200 flex items-center justify-between shadow-sm">
+                            <div>
+                                <p class="font-bold text-royal-950">Dynamic QR Auto-Rotation</p>
+                                <p class="text-xs text-slate-500">Regenerates cryptographic token every session</p>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">Enabled</span>
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-white border border-purple-200 flex items-center justify-between shadow-sm">
+                            <div>
+                                <p class="font-bold text-royal-950">Offline Wallet Cache</p>
+                                <p class="text-xs text-slate-500">Allows gate verification without cellular data</p>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">Active</span>
+                        </div>
+                        <button onclick="refreshDynamicQR(); closeModal();" class="w-full py-3 rounded-xl bg-gradient-to-r from-gold-500 to-gold-400 hover:from-gold-400 hover:to-gold-300 text-royal-950 font-display font-bold text-xs uppercase tracking-wider shadow-md transition-colors">
+                            Force Re-Sync Student Credentials
+                        </button>
+                    </div>
+                `;
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        // Render Services Modal with Interactive QR / Barcode Toggle
+        function renderServicesModalBody(container) {
+            const isBarcode = state.passMode === 'barcode';
+            container.innerHTML = `
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="p-3.5 rounded-2xl bg-white border border-purple-200 shadow-sm">
+                        <span class="text-xs text-slate-500 block">Library Privileges</span>
+                        <span class="font-display font-bold text-sm text-royal-900 mt-0.5 block">24/7 Main & Law Library</span>
+                    </div>
+                    <div class="p-3.5 rounded-2xl bg-white border border-gold-400/70 shadow-sm">
+                        <span class="text-xs text-slate-500 block">Dining Meal Plan</span>
+                        <span class="font-display font-extrabold text-lg text-gold-600">85 Meals Left</span>
+                    </div>
+                </div>
+
+                <!-- Interactive Pass Toggle -->
+                <div class="p-4 rounded-2xl bg-white border border-purple-200 text-center space-y-3 shadow-sm">
+                    <div class="inline-flex p-1 rounded-xl bg-royal-100 border border-purple-200">
+                        <button onclick="toggleServicePassMode('qr')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${!isBarcode ? 'bg-royal-800 text-white shadow' : 'text-royal-800 hover:text-royal-950'}">
+                            QR Campus Pass
+                        </button>
+                        <button onclick="toggleServicePassMode('barcode')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${isBarcode ? 'bg-royal-800 text-white shadow' : 'text-royal-800 hover:text-royal-950'}">
+                            Library / Dining Barcode
+                        </button>
+                    </div>
+
+                    <div class="bg-royal-50/70 p-4 rounded-2xl max-w-xs mx-auto border border-purple-200">
+                        ${isBarcode ? `
+                            <div class="py-3 bg-white px-3 rounded-xl border border-purple-100">
+                                <svg viewBox="0 0 220 60" class="w-full h-14">
+                                    <rect x="4" y="0" width="4" height="60" fill="#2B0B4E"/>
+                                    <rect x="12" y="0" width="2" height="60" fill="#2B0B4E"/>
+                                    <rect x="18" y="0" width="6" height="60" fill="#2B0B4E"/>
+                                    <rect x="28" y="0" width="2" height="60" fill="#2B0B4E"/>
+                                    <rect x="34" y="0" width="4" height="60" fill="#2B0B4E"/>
+                                    <rect x="44" y="0" width="6" height="60" fill="#2B0B4E"/>
+                                    <rect x="54" y="0" width="2" height="60" fill="#2B0B4E"/>
+                                    <rect x="60" y="0" width="4" height="60" fill="#2B0B4E"/>
+                                    <rect x="70" y="0" width="2" height="60" fill="#2B0B4E"/>
+                                    <rect x="76" y="0" width="6" height="60" fill="#2B0B4E"/>
+                                    <rect x="86" y="0" width="4" height="60" fill="#2B0B4E"/>
+                                    <rect x="96" y="0" width="2" height="60" fill="#2B0B4E"/>
+                                    <rect x="104" y="0" width="6" height="60" fill="#2B0B4E"/>
+                                    <rect x="114" y="0" width="2" height="60" fill="#2B0B4E"/>
+                                    <rect x="120" y="0" width="4" height="60" fill="#2B0B4E"/>
+                                    <rect x="130" y="0" width="6" height="60" fill="#2B0B4E"/>
+                                    <rect x="142" y="0" width="2" height="60" fill="#2B0B4E"/>
+                                    <rect x="148" y="0" width="4" height="60" fill="#2B0B4E"/>
+                                    <rect x="158" y="0" width="2" height="60" fill="#2B0B4E"/>
+                                    <rect x="164" y="0" width="6" height="60" fill="#2B0B4E"/>
+                                    <rect x="174" y="0" width="4" height="60" fill="#2B0B4E"/>
+                                    <rect x="184" y="0" width="2" height="60" fill="#2B0B4E"/>
+                                    <rect x="190" y="0" width="6" height="60" fill="#2B0B4E"/>
+                                    <rect x="202" y="0" width="2" height="60" fill="#2B0B4E"/>
+                                    <rect x="208" y="0" width="6" height="60" fill="#2B0B4E"/>
+                                </svg>
+                                <p class="font-mono text-xs font-bold text-royal-950 tracking-[0.25em] mt-1">*A20234387*</p>
+                            </div>
+                        ` : `
+                            <div class="w-32 h-32 mx-auto bg-white p-2 rounded-xl border border-purple-100">${generateQRSVG(state.qrSeed)}</div>
+                        `}
+                    </div>
+                    <p class="text-xs text-slate-600">Scan at Dining Commons, Library Turnstiles, or Campus Shuttle</p>
+                </div>
+            `;
+        }
+
+        function toggleServicePassMode(mode) {
+            state.passMode = mode;
+            const body = document.getElementById('modal-body');
+            if (body) renderServicesModalBody(body);
+        }
+
+        // Render Events Modal with Interactive RSVP Toggles
+        function renderEventsModalBody(container) {
+            container.innerHTML = `
+                <div class="space-y-3">
+                    <div class="p-4 rounded-2xl bg-white border border-purple-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
+                        <div>
+                            <span class="text-xs font-extrabold text-gold-600 uppercase">Nov 15th • 2:00 PM • Diplomatic Hall 202</span>
+                            <h5 class="font-bold text-base text-royal-950 mt-0.5">International Policy & Diplomacy Workshop</h5>
+                            <p class="text-xs text-slate-600 mt-1">Guest keynote with former UN Ambassador + career networking.</p>
+                        </div>
+                        <button onclick="toggleRSVP('event1')" class="px-4 py-2 rounded-xl font-display font-bold text-xs transition-all shrink-0 ${state.rsvps.event1 ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-gradient-to-r from-gold-500 to-gold-400 text-royal-950 hover:from-gold-400 hover:to-gold-300 shadow-sm'}">
+                            ${state.rsvps.event1 ? '✓ Registered' : 'RSVP Now'}
+                        </button>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-white border border-purple-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
+                        <div>
+                            <span class="text-xs font-extrabold text-gold-600 uppercase">Nov 18th • 5:30 PM • Student Union Lounge</span>
+                            <h5 class="font-bold text-base text-royal-950 mt-0.5">Model UN General Club Meet</h5>
+                            <p class="text-xs text-slate-600 mt-1">Committee assignments and spring conference travel briefing.</p>
+                        </div>
+                        <button onclick="toggleRSVP('event2')" class="px-4 py-2 rounded-xl font-display font-bold text-xs transition-all shrink-0 ${state.rsvps.event2 ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-gradient-to-r from-gold-500 to-gold-400 text-royal-950 hover:from-gold-400 hover:to-gold-300 shadow-sm'}">
+                            ${state.rsvps.event2 ? '✓ Registered' : 'RSVP Now'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function toggleRSVP(eventKey) {
+            state.rsvps[eventKey] = !state.rsvps[eventKey];
+            const body = document.getElementById('modal-body');
+            if (body) renderEventsModalBody(body);
+
+            const badge1 = document.getElementById('card-rsvp-1');
+            const badge2 = document.getElementById('card-rsvp-2');
+            if (badge1) {
+                badge1.textContent = state.rsvps.event1 ? 'Going' : 'RSVP';
+                badge1.className = state.rsvps.event1 
+                    ? 'px-2.5 py-1 rounded-md text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300'
+                    : 'px-2.5 py-1 rounded-md text-[11px] font-bold bg-white text-royal-800 border border-purple-300';
+            }
+            if (badge2) {
+                badge2.textContent = state.rsvps.event2 ? 'Going' : 'RSVP';
+                badge2.className = state.rsvps.event2 
+                    ? 'px-2.5 py-1 rounded-md text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300'
+                    : 'px-2.5 py-1 rounded-md text-[11px] font-bold bg-white text-royal-800 border border-purple-300';
+            }
+
+            const statusMsg = state.rsvps[eventKey] ? 'RSVP confirmed! Added to your Digital Passport.' : 'RSVP cancelled.';
+            showToast(statusMsg);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('detail-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Toast Helper
+        let toastTimeout;
+        function showToast(message) {
+            const toast = document.getElementById('toast-banner');
+            const msgEl = document.getElementById('toast-message');
+            msgEl.textContent = message;
+
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3200);
+        }
+
+        // Close modals when clicking backdrop
+        document.getElementById('detail-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'detail-modal') closeModal();
+        });
+        document.getElementById('fullscreen-qr-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'fullscreen-qr-modal') closeFullscreenQR();
+        });
+
+        // Initialize Icons and QR Codes on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            renderAllQRs();
+        });
+    </script>
+</body>
+</html>

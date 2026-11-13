@@ -1,3 +1,48 @@
-:root {
-  /* Design tokens */
+/*
+ * Design tokens (Tailwind v4 theme).
+ * Every token here becomes a utility, e.g. --color-royal-900 -> bg-royal-900 / text-royal-900,
+ * --font-display -> font-display.
+ */
+@theme inline {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+
+  /* Royal purple */
+  --color-royal-950: #1a0533;
+  --color-royal-900: #2b0b4e;
+  --color-royal-800: #3b0f6b;
+  --color-royal-700: #5b21b6;
+  --color-royal-600: #6d28d9;
+  --color-royal-100: #f3e8ff;
+  --color-royal-50: #faf8ff;
+
+  /* Gold */
+  --color-gold-200: #fde68a;
+  --color-gold-300: #f5df99;
+  --color-gold-400: #e5c158;
+  --color-gold-500: #d4af37;
+  --color-gold-600: #b45309;
+
+  --animate-pop: pop 0.2s ease-out;
+  --animate-shimmer: shimmer 6s infinite ease-in-out;
+
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%) rotate(25deg);
+    }
+    100% {
+      transform: translateX(200%) rotate(25deg);
+    }
+  }
 }

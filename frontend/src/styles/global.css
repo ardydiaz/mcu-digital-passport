@@ -1,1 +1,120 @@
-/* Global styles */
+/*
+ * Tailwind is imported WITHOUT cascade layers on purpose.
+ *
+ * Tailwind v4 normally puts everything in @layer. Any un-layered CSS then beats it regardless of
+ * specificity — and browser extensions (e.g. Grammarly) inject un-layered normalize-style rules such as
+ * `a { background-color: transparent }` and `h1 { font-size: 2em }`, which broke our styles.
+ * Un-layered, normal specificity applies again: `.bg-white` (class) beats `a` (element).
+ *
+ * The theme is also "inline" so utilities use literal values (.bg-white { background-color: #fff })
+ * instead of var(--color-white), which injected :root variables could override.
+ *
+ * Order matters: preflight → our base/components → utilities (utilities win ties).
+ */
+@import 'tailwindcss/theme.css' layer(theme) theme(inline);
+@import 'tailwindcss/preflight.css';
+@import './variables.css';
+
+/* ---------- Base ---------- */
+body {
+  @apply bg-royal-50 font-sans text-royal-950 antialiased;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-royal-50);
+}
+::-webkit-scrollbar-thumb {
+  background: #c4b5fd;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-royal-700);
+}
+
+/* ---------- Components ---------- */
+
+/* Lavender-white page background: soft glows, guilloche rings and a faint world-map watermark */
+.passport-bg {
+  background-color: var(--color-royal-50);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 500' fill='none' stroke='%235B21B6' stroke-opacity='0.06' stroke-width='1.5'%3E%3Cpath d='M150,120 Q200,80 260,110 T350,140 Q320,210 270,250 T210,360 Q180,300 160,220 Z'/%3E%3Cpath d='M450,90 Q520,70 590,100 T680,150 Q650,240 580,290 T480,350 Q440,260 450,180 Z'/%3E%3Cpath d='M720,130 Q800,110 880,150 T920,250 Q850,310 780,290 T720,200 Z'/%3E%3Ccircle cx='500' cy='250' r='220' stroke-dasharray='6 6'/%3E%3Ccircle cx='500' cy='250' r='160' stroke-dasharray='3 9'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 88% 10%, rgba(91, 33, 182, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 12% 85%, rgba(212, 175, 55, 0.12) 0%, transparent 42%),
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      rgba(59, 15, 107, 0.035) 0,
+      rgba(59, 15, 107, 0.035) 2px,
+      transparent 2px,
+      transparent 16px
+    );
+  background-size: cover, auto, auto, auto;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* Royal purple hero gradient */
+.geo-banner {
+  background: linear-gradient(
+    135deg,
+    var(--color-royal-900) 0%,
+    var(--color-royal-800) 55%,
+    var(--color-royal-700) 100%
+  );
+}
+
+/* Gold corner brackets around a framed element */
+.gold-corners {
+  position: relative;
+}
+.gold-corners::before,
+.gold-corners::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: var(--color-gold-500);
+  border-style: solid;
+  pointer-events: none;
+}
+.gold-corners::before {
+  top: -4px;
+  left: -4px;
+  border-width: 2.5px 0 0 2.5px;
+  border-top-left-radius: 6px;
+}
+.gold-corners::after {
+  bottom: -4px;
+  right: -4px;
+  border-width: 0 2.5px 2.5px 0;
+  border-bottom-right-radius: 6px;
+}
+
+/* Holographic gold sheen sweeping across a card */
+.holo-sheen {
+  position: relative;
+  overflow: hidden;
+}
+.holo-sheen::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.14), transparent);
+  animation: var(--animate-shimmer);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .holo-sheen::after {
+    animation: none;
+  }
+}
+
+/* ---------- Utilities (last, so they win ties) ---------- */
+@tailwind utilities;

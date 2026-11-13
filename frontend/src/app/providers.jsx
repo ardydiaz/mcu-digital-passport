@@ -1,5 +1,10 @@
 import AuthProvider from '../auth/AuthProvider';
+import ToastProvider from '../components/common/ToastProvider';
 
 export default function Providers({ children }) {
-  return <AuthProvider>{children}</AuthProvider>;
+  return (
+    <AuthProvider>
+      <ToastProvider>{children}</ToastProvider>
+    </AuthProvider>
+  );
 }
