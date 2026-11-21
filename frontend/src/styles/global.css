@@ -28,7 +28,7 @@ body {
   background: var(--color-royal-50);
 }
 ::-webkit-scrollbar-thumb {
-  background: #c4b5fd;
+  background: #cdb2e1;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -42,12 +42,12 @@ body {
   background-color: var(--color-royal-50);
   background-image:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 500' fill='none' stroke='%235B21B6' stroke-opacity='0.06' stroke-width='1.5'%3E%3Cpath d='M150,120 Q200,80 260,110 T350,140 Q320,210 270,250 T210,360 Q180,300 160,220 Z'/%3E%3Cpath d='M450,90 Q520,70 590,100 T680,150 Q650,240 580,290 T480,350 Q440,260 450,180 Z'/%3E%3Cpath d='M720,130 Q800,110 880,150 T920,250 Q850,310 780,290 T720,200 Z'/%3E%3Ccircle cx='500' cy='250' r='220' stroke-dasharray='6 6'/%3E%3Ccircle cx='500' cy='250' r='160' stroke-dasharray='3 9'/%3E%3C/svg%3E"),
-    radial-gradient(circle at 88% 10%, rgba(91, 33, 182, 0.08) 0%, transparent 45%),
-    radial-gradient(circle at 12% 85%, rgba(212, 175, 55, 0.12) 0%, transparent 42%),
+    radial-gradient(circle at 88% 10%, rgba(92, 36, 125, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 12% 85%, rgba(253, 185, 40, 0.12) 0%, transparent 42%),
     repeating-radial-gradient(
       circle at 50% 50%,
-      rgba(59, 15, 107, 0.035) 0,
-      rgba(59, 15, 107, 0.035) 2px,
+      rgba(72, 19, 99, 0.035) 0,
+      rgba(72, 19, 99, 0.035) 2px,
       transparent 2px,
       transparent 16px
     );
@@ -105,7 +105,7 @@ body {
   left: -50%;
   width: 50%;
   height: 200%;
-  background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.14), transparent);
+  background: linear-gradient(to right, transparent, rgba(253, 185, 40, 0.14), transparent);
   animation: var(--animate-shimmer);
   pointer-events: none;
 }

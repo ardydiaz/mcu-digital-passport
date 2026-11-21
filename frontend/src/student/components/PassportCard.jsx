@@ -24,9 +24,9 @@ export default function PassportCard({ showSeal = true }) {
       {/* Decorative geometric triangles */}
       <div className="pointer-events-none absolute bottom-0 right-0 top-0 w-48 opacity-30" aria-hidden="true">
         <svg viewBox="0 0 200 240" className="h-full w-full" preserveAspectRatio="none">
-          <polygon points="200,0 80,120 200,240" fill="#7C3AED" />
-          <polygon points="200,110 120,190 200,240" fill="#D4AF37" />
-          <polygon points="140,0 200,0 200,80" fill="#1A0533" />
+          <polygon points="200,0 80,120 200,240" fill="#7B42A2" />
+          <polygon points="200,110 120,190 200,240" fill="#FDB928" />
+          <polygon points="140,0 200,0 200,80" fill="#481363" />
         </svg>
       </div>
 

@@ -48,6 +48,7 @@ export default function FeatureCard({
         </div>
 
         {!inlineHeader && <h4 className={`mb-1 ${titleClass}`}>{title}</h4>}
+        {!inlineHeader && description && <p className="text-sm text-slate-600">{description}</p>}
         {children}
       </div>
 

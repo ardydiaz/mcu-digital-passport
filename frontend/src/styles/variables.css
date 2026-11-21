@@ -7,24 +7,98 @@
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
 
-  /* Royal purple */
-  --color-royal-950: #1a0533;
-  --color-royal-900: #2b0b4e;
-  --color-royal-800: #3b0f6b;
-  --color-royal-700: #5b21b6;
-  --color-royal-600: #6d28d9;
-  --color-royal-100: #f3e8ff;
-  --color-royal-50: #faf8ff;
+  /* MCU Heritage Purple (brand: #5C247D, shade: #481363) */
+  --color-royal-950: #481363;
+  --color-royal-900: #5c247d;
+  --color-royal-800: #6b3290;
+  --color-royal-700: #7b42a2;
+  --color-royal-600: #8e58b4;
+  --color-royal-100: #f1e8f7;
+  --color-royal-50: #faf6fc;
 
-  /* Gold */
-  --color-gold-200: #fde68a;
-  --color-gold-300: #f5df99;
-  --color-gold-400: #e5c158;
-  --color-gold-500: #d4af37;
-  --color-gold-600: #b45309;
+  /* Tailwind's purple tints, retuned to Heritage Purple (used for borders and light text) */
+  --color-purple-50: #faf6fc;
+  --color-purple-100: #f1e8f7;
+  --color-purple-200: #e2d1ee;
+  --color-purple-300: #cdb2e1;
+
+  /* MCU Heritage Gold (brand: #FDB928, shade: #EFA61E) */
+  --color-gold-200: #fee6ae;
+  --color-gold-300: #fed577;
+  --color-gold-400: #fdc64b;
+  --color-gold-500: #fdb928;
+  --color-gold-shade: #efa61e;
+  --color-gold-600: #9c6200; /* dark gold for TEXT on white (Heritage Gold is too light to read) */
 
   --animate-pop: pop 0.2s ease-out;
   --animate-shimmer: shimmer 6s infinite ease-in-out;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-slow: float 9s ease-in-out infinite;
+  --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-blob: blob 14s ease-in-out infinite;
+  --animate-progress: progress 1.5s ease-in-out forwards;
+  --animate-draw-check: draw-check 0.5s 0.25s ease-out forwards;
+  --animate-scale-in: scale-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+
+  @keyframes progress {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
+  @keyframes draw-check {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes blob {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      transform: translate(30px, -40px) scale(1.08);
+    }
+    66% {
+      transform: translate(-25px, 20px) scale(0.95);
+    }
+  }
 
   @keyframes pop {
     from {

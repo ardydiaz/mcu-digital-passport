@@ -8,7 +8,7 @@ export default function QRCode({ value, className = 'h-28 w-28', title = 'Verifi
         value={value}
         size={256}
         level="M"
-        fgColor="#2B0B4E"
+        fgColor="#481363"
         bgColor="#FFFFFF"
         title={title}
         style={{ width: '100%', height: '100%' }}

@@ -15,6 +15,7 @@ import Leaderboard from '../public/pages/Leaderboard';
 import Contact from '../public/pages/Contact';
 import PrivacyPolicy from '../public/pages/PrivacyPolicy';
 import NotFound from '../public/pages/NotFound';
+import NoAccess from '../public/pages/NoAccess';
 
 // Admin
 import AdminLogin from '../admin/auth/AdminLogin';
@@ -42,10 +43,14 @@ import ScanAttendance from '../organizer/pages/ScanAttendance';
 import AttendanceRecords from '../organizer/pages/AttendanceRecords';
 
 export const router = createBrowserRouter([
+  // Landing page = Microsoft 365 sign-in (full screen, no public header/footer)
+  { path: '/', element: <Home /> },
+  // Signed in with an MCU account that has no role yet (e.g. staff without Organizer/Admin)
+  { path: '/no-access', element: <NoAccess /> },
+
   {
     element: <PublicLayout />,
     children: [
-      { index: true, element: <Home /> },
       { path: 'about', element: <About /> },
       { path: 'how-it-works', element: <HowItWorks /> },
       { path: 'activities', element: <Activities /> },
@@ -55,7 +60,6 @@ export const router = createBrowserRouter([
       { path: 'contact', element: <Contact /> },
       { path: 'privacy-policy', element: <PrivacyPolicy /> },
     ],
-    path: '/',
   },
 
   { path: '/admin/login', element: <AdminLogin /> },

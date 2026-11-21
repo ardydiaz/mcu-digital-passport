@@ -1,5 +1,5 @@
 const VARIANTS = {
-  gold: 'bg-gradient-to-r from-gold-500 to-gold-400 hover:from-gold-400 hover:to-gold-300 text-royal-950 font-display font-bold shadow-md shadow-gold-500/20',
+  gold: 'bg-gold-500 hover:bg-gold-shade text-royal-950 font-display font-bold shadow-md shadow-gold-500/20',
   royal: 'bg-royal-800 hover:bg-royal-700 text-white font-semibold',
   glass: 'bg-white/10 hover:bg-white/20 text-white border border-gold-300/40 font-semibold',
   soft: 'bg-royal-50 hover:bg-royal-100 border border-purple-200 text-royal-800 font-semibold',
